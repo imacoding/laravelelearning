@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateTestsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('tests', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('course_id')->unsigned()->nullable();
+                $table->foreign('course_id', '54422_596eeef514d00')->references('id')->on('courses')->onDelete('cascade');
+                $table->integer('lesson_id')->unsigned()->nullable();
+                $table->foreign('lesson_id', '54422_596eeef53411a')->references('id')->on('lessons')->onDelete('cascade');
+                $table->string('title')->nullable();
+                $table->text('description')->nullable();
+                $table->tinyInteger('published')->nullable()->default(0);
+                $table->string('slug')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+
+                $table->index(['deleted_at']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('tests');
+    }
+}
